@@ -3,7 +3,7 @@ This program is intended to emulate a PLC on a Linux machine. This virtual PLC u
 
 The OpenPLC has different hardware layers to support physical devices. More hardware layers can be added to the project. For instance, there is a hardware layer for the RaspberryPi, which makes the OpenPLC controls its IO pins. 
 
-There is a NodeJS application that works as a http server for the user to upload these diagrams.
+There is a NodeJS application that works as a http server for the user to upload ladder diagrams.
 
 You must have NodeJS installed to use this program. Usage:
 
