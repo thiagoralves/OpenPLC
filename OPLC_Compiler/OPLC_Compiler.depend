@@ -1,0 +1,87 @@
+# depslib dependency file v1.0
+1443534961 source:/home/thiagoralves/Documents/OPLC_Compiler/OPLC_Compiler/main.cpp
+	<iostream>
+	<string.h>
+	<stdlib.h>
+	"oplc_compiler.h"
+
+1443535383 /home/thiagoralves/Documents/OPLC_Compiler/OPLC_Compiler/oplc_compiler.h
+
+1443478635 source:/home/thiagoralves/Documents/OPLC_Compiler/OPLC_Compiler/iolist.cpp
+	"oplc_compiler.h"
+
+1443478457 source:/home/thiagoralves/Documents/OPLC_Compiler/OPLC_Compiler/loadsave.cpp
+	"oplc_compiler.h"
+
+1443534848 source:/home/thiagoralves/Documents/OPLC_Compiler/OPLC_Compiler/miscutil.cpp
+	<iostream>
+	"oplc_compiler.h"
+
+1444054083 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/main.cpp
+	<iostream>
+	<string.h>
+	<stdlib.h>
+	"oplc_compiler.h"
+	"mcutable.h"
+
+1443804692 /home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/oplc_compiler.h
+	<stdlib.h>
+	<stdio.h>
+	<setjmp.h>
+
+1443804692 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/circuit.cpp
+	<stddef.h>
+	<stdlib.h>
+	"oplc_compiler.h"
+
+1443804692 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/iolist.cpp
+	<stdlib.h>
+	<string.h>
+	"oplc_compiler.h"
+
+1443804731 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/miscutil.cpp
+	<iostream>
+	<stdio.h>
+	<stdarg.h>
+	<string.h>
+	"oplc_compiler.h"
+
+1443804692 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/schematic.cpp
+	<stddef.h>
+	<string.h>
+	"oplc_compiler.h"
+
+1443804692 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/loadsave.cpp
+	<stdio.h>
+	<string.h>
+	<ctype.h>
+	"oplc_compiler.h"
+
+1443723656 /home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/mcutable.h
+
+1443804848 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/compilecommon.cpp
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	"oplc_compiler.h"
+
+1443804731 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/intcode.cpp
+	<stdio.h>
+	<stdlib.h>
+	<setjmp.h>
+	<stdarg.h>
+	<string.h>
+	<ctype.h>
+	"oplc_compiler.h"
+	"intcode.h"
+
+1443804798 /home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/intcode.h
+
+1443804848 source:/home/thiagoralves/Projects/OpenPLC/OPLC_Compiler/ansic.cpp
+	<string.h>
+	<stdio.h>
+	<setjmp.h>
+	<stdlib.h>
+	"oplc_compiler.h"
+	"intcode.h"
+

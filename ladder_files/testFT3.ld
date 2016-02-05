@@ -1,0 +1,20 @@
+LDmicro0.1
+CYCLE=50000
+CRYSTAL=4000000
+BAUD=2400
+
+IO LIST
+    X1_1 at 0
+    X1_2 at 0
+    Y5_1 at 0
+END
+
+PROGRAM
+RUNG
+    PARALLEL
+        CONTACTS X1_1 1
+        CONTACTS Y5_1 0
+    END
+    CONTACTS X1_2 0
+    COIL Y5_1 0 0 0
+END

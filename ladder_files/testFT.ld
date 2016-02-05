@@ -1,0 +1,59 @@
+LDmicro0.1
+CYCLE=50000
+CRYSTAL=4000000
+BAUD=2400
+
+IO LIST
+    Y1_0 at 0
+    Y1_1 at 0
+    Y2_0 at 0
+    Y2_1 at 0
+    Y3_0 at 0
+    Y3_1 at 0
+    Y4_0 at 0
+    Y4_1 at 0
+    Y5_0 at 0
+    Y5_1 at 0
+END
+
+PROGRAM
+RUNG
+    TON T1 100000
+    COIL Y1_0 0 0 0
+END
+RUNG
+    TON T2 200000
+    COIL Y1_1 0 0 0
+END
+RUNG
+    TON T3 300000
+    COIL Y2_0 0 0 0
+END
+RUNG
+    TON T4 400000
+    COIL Y2_1 0 0 0
+END
+RUNG
+    TON T5 500000
+    COIL Y3_0 0 0 0
+END
+RUNG
+    TON T6 600000
+    COIL Y3_1 0 0 0
+END
+RUNG
+    TON T7 700000
+    COIL Y4_0 0 0 0
+END
+RUNG
+    TON T8 800000
+    COIL Y4_1 0 0 0
+END
+RUNG
+    TON T9 900000
+    COIL Y5_0 0 0 0
+END
+RUNG
+    TON T10 1000000
+    COIL Y5_1 0 0 0
+END

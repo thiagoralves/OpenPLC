@@ -1,0 +1,21 @@
+﻿Build started 10/17/2015 11:57:41 AM.
+     1>Project "D:\Documents\Projects\OPLC_Compiler_win\OPLC_Compiler_win.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+       Link:
+         C:\Program Files\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Documents\Projects\OPLC_Compiler_win\Debug\OPLC_Compiler_win.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\Documents\Projects\OPLC_Compiler_win\Debug\OPLC_Compiler_win.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Documents\Projects\OPLC_Compiler_win\Debug\OPLC_Compiler_win.lib" /MACHINE:X86 Debug\ansic.obj
+         Debug\circuit.obj
+         Debug\compilecommon.obj
+         Debug\intcode.obj
+         Debug\iolist.obj
+         Debug\loadsave.obj
+         Debug\main.obj
+         Debug\miscutil.obj
+         Debug\schematic.obj
+         OPLC_Compiler_win.vcxproj -> D:\Documents\Projects\OPLC_Compiler_win\Debug\OPLC_Compiler_win.exe
+     1>Done Building Project "D:\Documents\Projects\OPLC_Compiler_win\OPLC_Compiler_win.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.73

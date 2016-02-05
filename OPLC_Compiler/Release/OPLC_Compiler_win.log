@@ -1,0 +1,37 @@
+﻿Build started 10/17/2015 12:01:35 PM.
+     1>Project "D:\Documents\Projects\OPLC_Compiler_win\OPLC_Compiler_win.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ansic.cpp circuit.cpp compilecommon.cpp intcode.cpp iolist.cpp loadsave.cpp main.cpp miscutil.cpp schematic.cpp
+         ansic.cpp
+         circuit.cpp
+         compilecommon.cpp
+         intcode.cpp
+         iolist.cpp
+         loadsave.cpp
+     1>loadsave.cpp(85): warning C4477: 'sscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 2 has type 'BOOL *'
+     1>loadsave.cpp(89): warning C4477: 'sscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 2 has type 'BOOL *'
+     1>loadsave.cpp(89): warning C4477: 'sscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 3 has type 'BOOL *'
+     1>loadsave.cpp(89): warning C4477: 'sscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 4 has type 'BOOL *'
+     1>loadsave.cpp(241): warning C4477: 'sscanf' : format string '%d' requires an argument of type 'int *', but variadic argument 4 has type 'BOOL *'
+         main.cpp
+         miscutil.cpp
+         schematic.cpp
+       Link:
+         C:\Program Files\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Documents\Projects\OPLC_Compiler_win\Release\OPLC_Compiler_win.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\Documents\Projects\OPLC_Compiler_win\Release\OPLC_Compiler_win.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Documents\Projects\OPLC_Compiler_win\Release\OPLC_Compiler_win.lib" /MACHINE:X86 /SAFESEH Release\ansic.obj
+         Release\circuit.obj
+         Release\compilecommon.obj
+         Release\intcode.obj
+         Release\iolist.obj
+         Release\loadsave.obj
+         Release\main.obj
+         Release\miscutil.obj
+         Release\schematic.obj
+         Generating code
+         All 79 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+         Finished generating code
+         OPLC_Compiler_win.vcxproj -> D:\Documents\Projects\OPLC_Compiler_win\Release\OPLC_Compiler_win.exe
+     1>Done Building Project "D:\Documents\Projects\OPLC_Compiler_win\OPLC_Compiler_win.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.50

@@ -1,0 +1,36 @@
+LDmicro0.1
+MICRO=Atmel AVR ATmega162 40-PDIP
+CYCLE=50000
+CRYSTAL=4000000
+BAUD=2400
+COMPILED=Core\arduino\libraries\Ladder\Ladder.cpp
+
+IO LIST
+    X1_0 at 0
+    X1_1 at 0
+    X3_1 at 0
+    Y1_0 at 0
+END
+
+PROGRAM
+RUNG
+    COMMENT ACTIVATES OUTPUT 1_0
+END
+RUNG
+    PARALLEL
+        CONTACTS X1_0 0
+        CONTACTS Y1_0 0
+    END
+    CONTACTS Rturnoff 1
+    COIL Y1_0 0 0 0
+END
+RUNG
+    COMMENT TURN OFF OUTPUT 1_0
+END
+RUNG
+    PARALLEL
+        CONTACTS X1_1 0
+        CONTACTS X3_1 0
+    END
+    COIL Rturnoff 0 0 0
+END
