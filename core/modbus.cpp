@@ -55,13 +55,20 @@ Modbus::Modbus(unsigned char *request, int size)
 //-----------------------------------------------------------------------------
 void Modbus::SetFC(int fc)
 {
-  if(fc == 1) FC = MB_FC_READ_COILS;
-  if(fc == 2) FC = MB_FC_READ_INPUTS;
-  if(fc == 3) FC = MB_FC_READ_REGISTERS;
-  if(fc == 5) FC = MB_FC_WRITE_COIL;
-  if(fc == 6) FC = MB_FC_WRITE_REGISTER;
-  if(fc == 15) FC = MB_FC_WRITE_MULTIPLE_COILS;
-  if(fc == 16) FC = MB_FC_WRITE_MULTIPLE_REGISTERS;
+	if(fc == 1) FC = MB_FC_READ_COILS;
+	else if(fc == 2) FC = MB_FC_READ_INPUTS;
+	else if(fc == 3) FC = MB_FC_READ_HOLDING_REGISTERS;
+	else if(fc == 4) FC = MB_FC_READ_INPUT_REGISTERS;
+	else if(fc == 5) FC = MB_FC_WRITE_COIL;
+	else if(fc == 6) FC = MB_FC_WRITE_REGISTER;
+	else if(fc == 15) FC = MB_FC_WRITE_MULTIPLE_COILS;
+	else if(fc == 16) FC = MB_FC_WRITE_MULTIPLE_REGISTERS;
+
+	else
+	{
+		FC = MB_FC_ERROR;
+		ER = ERR_ILLEGAL_FUNCTION;
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -100,13 +107,25 @@ void Modbus::ReadCoils()
 			{
 				bitWrite(ByteArray[9 + i], j, CoilsBuffer0[position]);
 			}
+			else //invalid address
+			{
+				FC = MB_FC_ERROR;
+				ER = ERR_ILLEGAL_DATA_ADDRESS;
+			}
 		}
 	}
 	pthread_mutex_unlock(&bufferLock);
 
-	MessageLength = ByteDataLength + 9;
-	Writes = 1 + Writes * (Writes < 999);
-	FC = MB_FC_NONE;
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		MessageLength = ByteDataLength + 9;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
 }
 
 void Modbus::ReadDiscreteInputs()
@@ -131,16 +150,28 @@ void Modbus::ReadDiscreteInputs()
 			{
 				bitWrite(ByteArray[9 + i], j, DiscreteInputBuffer0[position]);
 			}
+			else //invalid address
+			{
+				FC = MB_FC_ERROR;
+				ER = ERR_ILLEGAL_DATA_ADDRESS;
+			}
 		}
 	}
 	pthread_mutex_unlock(&bufferLock);
 
-	MessageLength = ByteDataLength + 9;
-	Writes = 1 + Writes * (Writes < 999);
-	FC = MB_FC_NONE;
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		MessageLength = ByteDataLength + 9;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
 }
 
-void Modbus::ReadRegisters()
+void Modbus::ReadHoldingRegisters()
 {
 	int Start, WordDataLength, ByteDataLength;
 
@@ -156,15 +187,66 @@ void Modbus::ReadRegisters()
 		int position = Start + i;
 		if (position < BUFFER_SIZE)
 		{
-			ByteArray[ 9 + i * 2] = highByte(MemBuffer0[position]);
-			ByteArray[10 + i * 2] =  lowByte(MemBuffer0[position]);
+			ByteArray[ 9 + i * 2] = highByte(AnalogOutputBuffer0[position]);
+			ByteArray[10 + i * 2] =  lowByte(AnalogOutputBuffer0[position]);
+		}
+		else //invalid address
+		{
+			FC = MB_FC_ERROR;
+			ER = ERR_ILLEGAL_DATA_ADDRESS;
 		}
 	}
 	pthread_mutex_unlock(&bufferLock);
 
-	MessageLength = ByteDataLength + 9;
-	Writes = 1 + Writes * (Writes < 999);
-	FC = MB_FC_NONE;
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		MessageLength = ByteDataLength + 9;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
+}
+
+void Modbus::ReadInputRegisters()
+{
+	int Start, WordDataLength, ByteDataLength;
+
+	Start = word(ByteArray[8],ByteArray[9]);
+	WordDataLength = word(ByteArray[10],ByteArray[11]);
+	ByteDataLength = WordDataLength * 2;
+	ByteArray[5] = ByteDataLength + 3; //Number of bytes after this one.
+	ByteArray[8] = ByteDataLength;     //Number of bytes after this one (or number of bytes of data).
+
+	pthread_mutex_lock(&bufferLock);
+	for(int i = 0; i < WordDataLength; i++)
+	{
+		int position = Start + i;
+		if (position < BUFFER_SIZE)
+		{
+			ByteArray[ 9 + i * 2] = highByte(AnalogInputBuffer0[position]);
+			ByteArray[10 + i * 2] =  lowByte(AnalogInputBuffer0[position]);
+		}
+		else //invalid address
+		{
+			FC = MB_FC_ERROR;
+			ER = ERR_ILLEGAL_DATA_ADDRESS;
+		}
+	}
+	pthread_mutex_unlock(&bufferLock);
+
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		MessageLength = ByteDataLength + 9;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
 }
 
 void Modbus::WriteCoil()
@@ -179,11 +261,23 @@ void Modbus::WriteCoil()
 		CoilsBuffer0[Start] = word(ByteArray[10],ByteArray[11]) > 0;
 		pthread_mutex_unlock(&bufferLock);
 	}
+	else //invalid address
+	{
+		FC = MB_FC_ERROR;
+		ER = ERR_ILLEGAL_DATA_ADDRESS;
+	}
 
-	ByteArray[5] = 2; //Number of bytes after this one.
-	MessageLength = 12;
-	Writes = 1 + Writes * (Writes < 999);
-	FC = MB_FC_NONE;
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		ByteArray[5] = 2; //Number of bytes after this one.
+		MessageLength = 12;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
 }
 
 void Modbus::WriteRegister()
@@ -195,14 +289,26 @@ void Modbus::WriteRegister()
 	if (Start < BUFFER_SIZE)
 	{
 		pthread_mutex_lock(&bufferLock);
-		MemBuffer0[Start] = word(ByteArray[10],ByteArray[11]);
+		AnalogOutputBuffer0[Start] = word(ByteArray[10],ByteArray[11]);
 		pthread_mutex_unlock(&bufferLock);
 	}
+	else //invalid address
+	{
+		FC = MB_FC_ERROR;
+		ER = ERR_ILLEGAL_DATA_ADDRESS;
+	}
 
-	ByteArray[5] = 6; //Number of bytes after this one.
-	MessageLength = 12;
-	Writes = 1 + Writes * (Writes < 999);
-	FC = MB_FC_NONE;
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		ByteArray[5] = 6; //Number of bytes after this one.
+		MessageLength = 12;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
 }
 
 void Modbus::WriteMultipleCoils()
@@ -226,13 +332,25 @@ void Modbus::WriteMultipleCoils()
 			{
 				CoilsBuffer0[position] = bitRead(ByteArray[13 + i], j);
 			}
+			else //invalid address
+			{
+				FC = MB_FC_ERROR;
+				ER = ERR_ILLEGAL_DATA_ADDRESS;
+			}
 		}
 	}
 	pthread_mutex_unlock(&bufferLock);
 
-	MessageLength = 12;
-	Writes = 1 + Writes * (Writes < 999);
-	FC = MB_FC_NONE;
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		MessageLength = 12;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
 }
 
 void Modbus::WriteMultipleRegisters()
@@ -251,12 +369,33 @@ void Modbus::WriteMultipleRegisters()
 		{
 			MemBuffer0[Start + i] =  word(ByteArray[ 13 + i * 2],ByteArray[14 + i * 2]);
 		}
+		else //invalid address
+		{
+			FC = MB_FC_ERROR;
+			ER = ERR_ILLEGAL_DATA_ADDRESS;
+		}
 	}
 	pthread_mutex_unlock(&bufferLock);
 
-	MessageLength = 12;
-	Writes = 1 + Writes * (Writes < 999);
+	if (FC == MB_FC_ERROR)
+	{
+		ModbusError();
+	}
+	else
+	{
+		MessageLength = 12;
+		Writes = 1 + Writes * (Writes < 999);
+		FC = MB_FC_NONE;
+	}
+}
+
+void Modbus::ModbusError()
+{
+	ByteArray[7] = ByteArray[7] | 0x80; //set the highest bit
+	ByteArray[8] = ER;
+	MessageLength = 9;
 	FC = MB_FC_NONE;
+	ER = ERR_NONE;
 }
 
 //-----------------------------------------------------------------------------
@@ -274,15 +413,23 @@ int Modbus::Run(unsigned char *reply)
 	{
 		ReadCoils();
 	}
+
 	//*************** Read Discrete Inputs ***************
 	else if(FC == MB_FC_READ_INPUTS)
 	{
 		ReadDiscreteInputs();
 	}
-	//****************** Read Registers ******************
-	else if(FC == MB_FC_READ_REGISTERS)
+
+	//****************** Read Holding Registers ******************
+	else if(FC == MB_FC_READ_HOLDING_REGISTERS)
 	{
-		ReadRegisters();
+		ReadHoldingRegisters();
+	}
+
+	//****************** Read Input Registers ******************
+	else if(FC == MB_FC_READ_HOLDING_REGISTERS)
+	{
+		ReadInputRegisters();
 	}
 
 	//****************** Write Coil **********************
@@ -307,6 +454,12 @@ int Modbus::Run(unsigned char *reply)
 	else if(FC == MB_FC_WRITE_MULTIPLE_REGISTERS)
 	{
 		WriteMultipleRegisters();
+	}
+
+	//****************** Function Code Error ******************
+	else if(FC == MB_FC_ERROR)
+	{
+		ModbusError();
 	}
 
 	for(int i = 0; i < MessageLength; i++)

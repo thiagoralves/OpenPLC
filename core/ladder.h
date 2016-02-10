@@ -36,10 +36,10 @@
 
 //Internal buffers for I/O and memory. These buffers are defined in the
 //auto-generated code by the OPLC_Compiler
-#define BUFFER_SIZE		100
+#define BUFFER_SIZE		10000
 
-extern SWORD AnalogInputBuffer0[BUFFER_SIZE];
-extern SWORD AnalogOutputBuffer0[BUFFER_SIZE];
+extern SWORD AnalogInputBuffer0[BUFFER_SIZE]; //Input Registers
+extern SWORD AnalogOutputBuffer0[BUFFER_SIZE]; //Holding Registers
 extern BOOL DiscreteInputBuffer0[BUFFER_SIZE];
 extern BOOL CoilsBuffer0[BUFFER_SIZE];
 
@@ -75,14 +75,26 @@ void startServer(int port);
 //Declaration of the supported modbus functions and the respective function code
 enum MB_FC
 {
-  MB_FC_NONE           = 0,
-  MB_FC_READ_COILS     = 1,
-  MB_FC_READ_INPUTS	   = 2,
-  MB_FC_READ_REGISTERS = 3,
-  MB_FC_WRITE_COIL     = 5,
-  MB_FC_WRITE_REGISTER = 6,
-  MB_FC_WRITE_MULTIPLE_COILS = 15,
-  MB_FC_WRITE_MULTIPLE_REGISTERS = 16
+	MB_FC_NONE						= 0,
+	MB_FC_READ_COILS				= 1,
+	MB_FC_READ_INPUTS				= 2,
+	MB_FC_READ_HOLDING_REGISTERS	= 3,
+	MB_FC_READ_INPUT_REGISTERS		= 4,
+	MB_FC_WRITE_COIL				= 5,
+	MB_FC_WRITE_REGISTER			= 6,
+	MB_FC_WRITE_MULTIPLE_COILS		= 15,
+	MB_FC_WRITE_MULTIPLE_REGISTERS	= 16,
+	MB_FC_ERROR						= 255
+};
+
+enum MB_ERROR
+{
+	ERR_NONE						= 0,
+	ERR_ILLEGAL_FUNCTION			= 1,
+	ERR_ILLEGAL_DATA_ADDRESS		= 2,
+	ERR_ILLEGAL_DATA_VALUE			= 3,
+	ERR_SLAVE_DEVICE_FAILURE		= 4,
+	ERR_SLAVE_DEVICE_BUSY			= 6
 };
 
 //Definition of the Modbus class
@@ -99,15 +111,18 @@ class Modbus
 		unsigned char ByteArray[260]; //message received / sent
 		int MessageLength; //size of the reply message
 		MB_FC FC; //Function code received / sent
+		MB_ERROR ER; //Modbus error
 		void SetFC(int fc); //method to identify the function code received
 		int word(unsigned char byte1, unsigned char byte2); //method to create a word from two bytes
 		void ReadCoils();
 		void ReadDiscreteInputs();
-		void ReadRegisters();
+		void ReadHoldingRegisters();
+		void ReadInputRegisters();
 		void WriteCoil();
 		void WriteRegister();
 		void WriteMultipleCoils();
 		void WriteMultipleRegisters();
+		void ModbusError();
 };
 
 #endif
