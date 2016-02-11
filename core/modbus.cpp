@@ -427,7 +427,7 @@ int Modbus::Run(unsigned char *reply)
 	}
 
 	//****************** Read Input Registers ******************
-	else if(FC == MB_FC_READ_HOLDING_REGISTERS)
+	else if(FC == MB_FC_READ_INPUT_REGISTERS)
 	{
 		ReadInputRegisters();
 	}
