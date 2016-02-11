@@ -367,7 +367,7 @@ void Modbus::WriteMultipleRegisters()
 	{
 		if ((Start + i) < BUFFER_SIZE)
 		{
-			MemBuffer0[Start + i] =  word(ByteArray[ 13 + i * 2],ByteArray[14 + i * 2]);
+			AnalogOutputBuffer0[Start + i] =  word(ByteArray[ 13 + i * 2],ByteArray[14 + i * 2]);
 		}
 		else //invalid address
 		{
