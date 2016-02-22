@@ -40,11 +40,15 @@
 
 #define PORT        6668
 
+#define ANALOG_BUF_SIZE		8
+#define DIGITAL_BUF_SIZE	16
+
 struct plcData
 {
-	uint16_t pressure = 0;
-	bool pumpState = 0;
-	bool reliefValve = 0;
+	uint16_t analogIn[ANALOG_BUF_SIZE];
+	uint16_t analogOut[ANALOG_BUF_SIZE];
+	bool digitalIn[DIGITAL_BUF_SIZE];
+	bool digitalOut[DIGITAL_BUF_SIZE];
 };
 
 //-----------------------------------------------------------------------------
@@ -121,9 +125,16 @@ void *exchangeData(void *arg)
 		else
 		{
 			pthread_mutex_lock(&bufferLock); //lock mutex
-			AnalogInputBuffer0[0] = plc_data->pressure;
-			plc_data->pumpState = CoilsBuffer0[0];
-			plc_data->reliefValve = CoilsBuffer0[1];
+			for (int i = 0; i < ANALOG_BUF_SIZE; i++)
+			{
+				AnalogInputBuffer0[i] = plc_data->analogIn[i];
+				plc_data->analogOut[i] = AnalogOutputBuffer0[i];
+			}
+			for (int i = 0; i < DIGITAL_BUF_SIZE; i++)
+			{
+				DiscreteInputBuffer0[i] = plc_data->digitalIn[i];
+				plc_data->digitalOut[i] = CoilsBuffer0[i];
+			}
 			pthread_mutex_unlock(&bufferLock); //unlock mutex
 
 			//printf("sending data...\n");
@@ -157,4 +168,3 @@ void updateBuffers()
 	// Interface program is already filling the OpenPLC buffers with the
 	// data that is being received.
 }
-
