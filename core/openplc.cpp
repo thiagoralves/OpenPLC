@@ -34,6 +34,18 @@ using namespace std;
 pthread_mutex_t bufferLock; //mutex for the internal buffers
 
 
+//-----------------------------------------------------------------------------
+// Helper function - Makes the running thread sleep for the ammount of time
+// in milliseconds
+//-----------------------------------------------------------------------------
+void sleep_thread(int milliseconds)
+{
+	struct timespec ts;
+	ts.tv_sec = milliseconds / 1000;
+	ts.tv_nsec = (milliseconds % 1000) * 1000000;
+	nanosleep(&ts, NULL);
+}
+
 void *modbusThread(void *arg)
 {
 	startServer(502);
@@ -70,14 +82,20 @@ int main(void)
 	//======================================================
     initializeHardware();
     updateBuffers();
-
-	struct timespec timer_start;
 	pthread_t thread;
 	pthread_create(&thread, NULL, modbusThread, NULL);
 
 	//======================================================
+	//          PERSISTENT STORAGE INITIALIZATION
+	//======================================================
+	readPersistentStorage();
+	pthread_t persistentThread;
+	pthread_create(&persistentThread, NULL, persistentStorage, NULL);
+
+	//======================================================
 	//                    MAIN LOOP
 	//======================================================
+	struct timespec timer_start;
 	for(;;)
 	{
 		clock_gettime(CLOCK_MONOTONIC, &timer_start);
@@ -85,6 +103,7 @@ int main(void)
 		while (measureTime(&timer_start) < OPLC_CYCLE)
 		{
 			updateBuffers();
+			sleep_thread(1);
 		}
 	}
 }

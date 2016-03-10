@@ -56,10 +56,10 @@ extern pthread_mutex_t bufferLock;
 
 //hardware_layer.cpp
 void initializeHardware();
-void sendOutput(unsigned char *sendBytes, unsigned char *recvBytes);
 void updateBuffers();
 
 //openplc.cpp
+void sleep_thread(int milliseconds);
 void *modbusThread();
 void PlcCycle(void); //read inputs, process them according to the ladder software and set outputs
 
@@ -70,6 +70,10 @@ int listenToClient(int client_fd, unsigned char *buffer);
 void processMessage(unsigned char *buffer, int bufferSize);
 void *handleConnections(void *arguments);
 void startServer(int port);
+
+//persistent_storage.cpp
+void *persistentStorage(void *args);
+int readPersistentStorage();
 
 //modbus.cpp
 //Declaration of the supported modbus functions and the respective function code
