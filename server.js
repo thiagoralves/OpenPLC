@@ -3,7 +3,7 @@ var multer = require('multer');
 var app = express();
 var upload = multer({ dest: './ladder_files/'});
 var spawn = require('child_process').spawn;
-var openplc = spawn('./core/openplc');
+var openplc = spawn('./core/OPLC_starter');
 
 var plcRunning = true;
 
@@ -36,7 +36,7 @@ app.get('/run',function(req,res)
 	if (plcRunning == false)
 	{
 		console.log('Starting OpenPLC Software...');
-		openplc = spawn('./core/openplc');
+		openplc = spawn('./core/OPLC_starter');
 		plcRunning = true;
 	}
 	showMainPage(req,res);
@@ -168,7 +168,7 @@ function compileOpenPLC()
 		{
 			console.log('compiled without errors');
 			console.log('Starting OpenPLC Software...');
-			openplc = spawn('./core/openplc');
+			openplc = spawn('./core/OPLC_starter');
 			plcRunning = true;
 		}
 	});
