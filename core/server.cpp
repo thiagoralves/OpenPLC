@@ -128,7 +128,7 @@ void *handleConnections(void *arguments)
 		int messageSize;
 
 		messageSize = listenToClient(client_fd, buffer);
-		if (messageSize <= 0)
+		if (messageSize <= 0 || messageSize > 256)
 		{
 			break;
 		}
