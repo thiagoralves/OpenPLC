@@ -48,7 +48,7 @@ int main()
 		if (!fork())
 		{
 			//executes OpenPLC
-			execl("./openplc", "./openplc", (char *) 0);
+			execl("./core/openplc", "./core/openplc", (char *) 0);
 		}
 
 		else

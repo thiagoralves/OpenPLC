@@ -7,17 +7,17 @@ echo [LADDER]
 cd ..
 cp ./OPLC_Compiler_source/OPLC_Compiler ./
 ./OPLC_Compiler ./ladder_files/blank_ladder.ld &> /dev/null
-rm ./core/ladder.cpp
+rm -f ./core/ladder.cpp
 mv ./ladder.cpp ./core/
-cd core
-rm ./hardware_layer.cpp
 
 echo [OPLC_STARTER]
-cd OPLC_starter_src
+cd OPLC_starter_source
 g++ *.cpp -o OPLC_starter
 cd ..
-cp ./OPLC_starter_src/OPLC_starter ./
+cp ./OPLC_starter_source/OPLC_starter ./
 
+cd core
+rm -f ./hardware_layer.cpp
 echo The OpenPLC needs a driver to be able to control physical or virtual hardware.
 echo Please select the driver you would like to use:
 OPTIONS="Blank Fischertechnik RaspberryPi Simulink Unipi"
